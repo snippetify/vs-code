@@ -1,0 +1,79 @@
+{
+	"name": "snippetify",
+	"displayName": "Snippetify",
+	"description": "Fetch and save snippets",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.46.0"
+	},
+	"categories": [
+		"Snippets",
+		"Programming Languages"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"main": "./dist/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "snippetify.webview.search_snippet",
+				"title": "Snippetify: Search snippets"
+			},
+			{
+				"command": "snippetify.webview.save_snippet",
+				"title": "Snippetify: Save snippet"
+			},
+			{
+				"command": "snippetify.webview.show_snippet",
+				"title": "Snippetify: Show snippet"
+			}
+		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "snippetify-explorer",
+					"title": "Snippetify",
+					"icon": "img/icon.svg"
+				}
+			]
+		},
+		"views": {
+			"snippetify-explorer": [
+				{
+					"id": "snippetify-explorer",
+					"name": "Collections",
+					"icon": "img/icon.svg",
+					"contextualTitle": "Snippet's collections"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "webpack --mode production",
+		"compile": "tsc -p ./",
+		"lint": "eslint src --ext ts",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"test": "node ./out/test/runTest.js",
+		"webpack": "webpack --mode development",
+		"webpack-dev": "webpack --mode development --watch",
+		"test-compile": "tsc -p ./"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.1",
+		"@types/mocha": "^7.0.2",
+		"@types/node": "^13.11.0",
+		"@types/vscode": "^1.46.0",
+		"@typescript-eslint/eslint-plugin": "^2.30.0",
+		"@typescript-eslint/parser": "^2.30.0",
+		"eslint": "^6.8.0",
+		"glob": "^7.1.6",
+		"mocha": "^7.1.2",
+		"ts-loader": "^7.0.5",
+		"typescript": "^3.8.3",
+		"vscode-test": "^1.3.0",
+		"webpack": "^4.43.0",
+		"webpack-cli": "^3.3.12"
+	}
+}
