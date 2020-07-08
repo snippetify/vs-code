@@ -1,9 +1,11 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
+import { TextDecoder } from 'util';
 
 import Snippet from './Snippet';
 import SnippetManager from './SnippetManager';
+import TreeViewManager from './TreeViewManager';
 
 class WebviewManager {
 
@@ -14,12 +16,10 @@ class WebviewManager {
 
     static instance: WebviewManager;
     
-    private config: any;
     private webviewPanel?: vscode.WebviewPanel = undefined;
 
     constructor(readonly ctx: vscode.ExtensionContext) {
         this.registerCommands();
-        this.config = vscode.workspace.getConfiguration('snippetify');
     }
 
     static create(ctx: vscode.ExtensionContext): WebviewManager {
@@ -56,7 +56,14 @@ class WebviewManager {
                         break;
                     case 'alert':
                         if (e.type === 'error') { vscode.window.showErrorMessage(e.message); }
-                        else if (e.type === 'success') { vscode.window.showInformationMessage(e.message); }
+                        else if (e.type === 'success') {
+                            if (e.context === 'favorite') { // Refresh collection
+                                vscode.commands.executeCommand(TreeViewManager.REFRESH_COLLECTION_FAVORITE_CMD);
+                            } else if (e.context === 'saved') { // Refresh collection on saving snippet
+                                vscode.commands.executeCommand(TreeViewManager.REFRESH_COLLECTION_MINE_CMD);
+                            }
+                            vscode.window.showInformationMessage(e.message);
+                        }
                         break;
                 }
             }, undefined, this.ctx.subscriptions);
@@ -73,8 +80,11 @@ class WebviewManager {
             if (!this.webviewPanel) { return; }
 
             const webview  = this.webviewPanel.webview;
+            const config   = vscode.workspace.getConfiguration('snippetify');
             const htmlPath = webview.asWebviewUri(vscode.Uri.file(path.join(this.ctx.extensionPath, 'dist/html')));
-            webview.html   = String(data)
+            const manifest = JSON.parse(fs.readFileSync(path.join(this.ctx.extensionPath, 'package.json'), 'utf-8'));
+            
+            webview.html   = new TextDecoder().decode(data).trim()
                 .replace(/src=\//g, `src=${htmlPath}/`)
                 .replace(/href=\//g, `href=${htmlPath}/`)
                 .replace(/__cspSource__/g, String(webview.cspSource))
@@ -83,7 +93,8 @@ class WebviewManager {
                         (function() {
                             window.snippetify = {
                                 meta: ${JSON.stringify(meta)},
-                                token: '${this.config.token}',
+                                token: '${config.token}',
+                                baseURL: '${manifest.baseURL}',
                                 snippet: ${JSON.stringify(snippet?.attributes)},
                                 projectPath: '${htmlPath}',
                                 vscode: acquireVsCodeApi()
