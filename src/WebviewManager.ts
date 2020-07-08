@@ -7,15 +7,19 @@ import SnippetManager from './SnippetManager';
 
 class WebviewManager {
 
-    private SNIPPET_SAVE: string = 'snippetify.webview.save_snippet';
-    private SNIPPET_SHOW: string = 'snippetify.webview.search_snippet';
-    private SNIPPET_SEARCH: string = 'snippetify.webview.show_snippet';
+    public static SAVE_PANEL_CMD: string   = 'snippetify.webview.save_panel';
+    public static SHOW_PANEL_CMD: string   = 'snippetify.webview.show_panel';
+    public static CLOSE_PANEL_CMD: string  = 'snippetify.webview.close_panel';
+    public static SEARCH_PANEL_CMD: string = 'snippetify.webview.search_panel';
 
     static instance: WebviewManager;
+    
+    private config: any;
     private webviewPanel?: vscode.WebviewPanel = undefined;
 
     constructor(readonly ctx: vscode.ExtensionContext) {
         this.registerCommands();
+        this.config = vscode.workspace.getConfiguration('snippetify');
     }
 
     static create(ctx: vscode.ExtensionContext): WebviewManager {
@@ -23,7 +27,7 @@ class WebviewManager {
         return this.instance;
     }
 
-    private launchWebview (snippet?: Snippet, meta: object = {}) {
+    private launchWebview (snippet?: Snippet, meta: any = {}) {
         if (!this.webviewPanel) {
             this.webviewPanel = vscode.window.createWebviewPanel(
                 'snippetify',
@@ -34,49 +38,18 @@ class WebviewManager {
                     localResourceRoots: [vscode.Uri.file(path.join(this.ctx.extensionPath, 'dist'))]
                 }
             );
-        }
-        this.hydrateWebview(snippet, meta);
-    }
 
-    private hydrateWebview (snippet?: Snippet, meta: object = {}) {
-        fs.readFile(path.join(this.ctx.extensionPath, 'dist', 'html', 'index.html'), (err, data) => {
-            
-            if (!this.webviewPanel) { return; }
+            this.webviewPanel.onDidDispose(() => {
+                this.webviewPanel = undefined;
+            }, undefined, this.ctx.subscriptions);
 
-            const token    = '';
-            const webview  = this.webviewPanel.webview;
-            const htmlPath = webview.asWebviewUri(vscode.Uri.file(path.join(this.ctx.extensionPath, 'dist/html')));
-            webview.html   = String(data)
-                .replace(/src=\//g, `src=${htmlPath}/`)
-                .replace(/href=\//g, `href=${htmlPath}/`)
-                .replace(/__cspSource__/g, String(webview.cspSource))
-                .replace('</head>', `
-                    <script>
-                        (function() {
-                            window.snippetify = {
-                                meta: '${meta}',
-                                token: '${token}',
-                                snippet: ${snippet?.toArray()},
-                                projectPath: '${htmlPath}',
-                                vscode: acquireVsCodeApi()
-                            };
-                        }())
-                    </script>
-                    </head>
-                `);
-            
-            webview.onDidReceiveMessage(e => {
+            this.webviewPanel.webview.onDidReceiveMessage(e => {
                 switch (e.action) {
                     case 'save':
-                        vscode.commands.executeCommand(SnippetManager.SAVE_SNIPPET, new Snippet(e.snippet));
+                        vscode.commands.executeCommand(SnippetManager.SAVE_SNIPPET_CMD, new Snippet(e.snippet));
                         break;
                     case 'copy':
-                        vscode.commands.executeCommand(SnippetManager.COPY_SNIPPET, new Snippet(e.snippet));
-                        break;
-                    case 'show':
-                        vscode.window.showInformationMessage('show snippet');
-                        console.log(JSON.stringify(e.snippet));
-                        this.showSnippet(new Snippet(e.snippet));
+                        vscode.commands.executeCommand(SnippetManager.COPY_SNIPPET_CMD, new Snippet(e.snippet));
                         break;
                     case 'close':
                         this.webviewPanel?.dispose();
@@ -87,30 +60,68 @@ class WebviewManager {
                         break;
                 }
             }, undefined, this.ctx.subscriptions);
+        }
+
+        this.hydrateWebview(snippet, meta);
+        
+        this.webviewPanel.reveal(vscode.ViewColumn.Beside);
+    }
+
+    private hydrateWebview (snippet?: Snippet, meta: any = {}) {
+        fs.readFile(path.join(this.ctx.extensionPath, 'dist', 'html', 'index.html'), (err, data) => {
+            
+            if (!this.webviewPanel) { return; }
+
+            const webview  = this.webviewPanel.webview;
+            const htmlPath = webview.asWebviewUri(vscode.Uri.file(path.join(this.ctx.extensionPath, 'dist/html')));
+            webview.html   = String(data)
+                .replace(/src=\//g, `src=${htmlPath}/`)
+                .replace(/href=\//g, `href=${htmlPath}/`)
+                .replace(/__cspSource__/g, String(webview.cspSource))
+                .replace('</head>', `
+                    <script>
+                        (function() {
+                            window.snippetify = {
+                                meta: ${JSON.stringify(meta)},
+                                token: '${this.config.token}',
+                                snippet: ${JSON.stringify(snippet?.attributes)},
+                                projectPath: '${htmlPath}',
+                                vscode: acquireVsCodeApi()
+                            };
+                        }())
+                    </script>
+                    </head>
+                `);
         });
     }
 
-    public showSnippet (snippet?: Snippet, meta: object = {}) {
+    public showSnippet (snippet: Snippet, meta: any = {}) {
         this.launchWebview(snippet, { page: 'show', ...meta });
     }
 
-    public searchSnippets (meta: object = {}) {
+    public searchSnippets (meta: any = {}) {
         this.launchWebview(undefined, { page: 'index', ...meta });
     }
 
-    public saveSnippet (snippet?: Snippet, meta: object = {}) {
+    public saveSnippet (snippet: Snippet, meta: any = {}) {
         this.launchWebview(snippet, { page: 'new', ...meta });
     }
 
     private registerCommands () {
-        this.ctx.subscriptions.push(vscode.commands.registerCommand(this.SNIPPET_SAVE, (snippet?: Snippet, meta: object = {}) => {
+        this.ctx.subscriptions.push(vscode.commands.registerCommand(WebviewManager.SAVE_PANEL_CMD, (snippet: Snippet, meta: any = {}) => {
             this.saveSnippet(snippet, meta);
         }));
-        this.ctx.subscriptions.push(vscode.commands.registerCommand(this.SNIPPET_SHOW, (snippet?: Snippet, meta: object = {}) => {
+
+        this.ctx.subscriptions.push(vscode.commands.registerCommand(WebviewManager.SHOW_PANEL_CMD, (snippet: Snippet, meta: any = {}) => {
             this.showSnippet(snippet, meta);
         }));
-        this.ctx.subscriptions.push(vscode.commands.registerCommand(this.SNIPPET_SEARCH, (meta: object = {}) => {
+
+        this.ctx.subscriptions.push(vscode.commands.registerCommand(WebviewManager.SEARCH_PANEL_CMD, (meta: any = {}) => {
             this.searchSnippets(meta);
+        }));
+
+        this.ctx.subscriptions.push(vscode.commands.registerCommand(WebviewManager.CLOSE_PANEL_CMD, () => {
+            this.webviewPanel?.dispose();
         }));
     }
 

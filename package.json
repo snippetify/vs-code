@@ -17,36 +17,158 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "snippetify.webview.search_snippet",
-				"title": "Snippetify: Search snippets"
+				"command": "snippetify.snippet.save",
+				"title": "Snippetify: Save selection",
+				"icon": "$(save-as)"
 			},
 			{
-				"command": "snippetify.webview.save_snippet",
-				"title": "Snippetify: Save snippet"
+				"command": "snippetify.snippet.search",
+				"title": "Snippetify: Search snippets",
+				"icon": "$(search)"
 			},
 			{
-				"command": "snippetify.webview.show_snippet",
-				"title": "Snippetify: Show snippet"
+				"command": "snippetify.snippet.show",
+				"title": "Snippetify: Show Snippet",
+				"icon": "$(gist)"
+			},
+			{
+				"command": "snippetify.webview.close_panel",
+				"title": "Snippetify: Close Panel",
+				"icon": "$(close)"
+			},
+			{
+				"command": "snippetify.collection.all.add",
+				"title": "Snippetify: Refresh collection",
+				"icon": "$(add)"
+			},
+			{
+				"command": "snippetify.collection.all.refresh",
+				"title": "Snippetify: Add to collection",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "snippetify.collection.all.delete",
+				"title": "Snippetify: Delete collection",
+				"icon": "$(clear-all)"
+			},
+			{
+				"command": "snippetify.collection.mine.refresh",
+				"title": "Snippetify: Refresh my snippets",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "snippetify.collection.favorite.refresh",
+				"title": "Snippetify: Refresh favorites snippets",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "snippetify.collection.recent.refresh",
+				"title": "Snippetify: Refresh recently used",
+				"icon": "$(refresh)"
 			}
 		],
+		"keybindings": [
+			{
+				"command": "snippetify.snippet.save",
+				"key": "ctrl+alt+s",
+				"mac": "cmd+alt+s",
+				"when": "editorHasSelection"
+			},
+			{
+				"command": "snippetify.snippet.search",
+				"key": "ctrl+alt+f",
+				"mac": "cmd+alt+f",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "snippetify.webview.close_panel",
+				"key": "ctrl+alt+c",
+				"mac": "cmd+alt+c"
+			}
+		],
+		"menus": {
+			"view/title": [
+				{
+					"command": "snippetify.collection.all.add",
+					"when": "view == snippet-collections",
+					"group": "navigation"
+				},
+				{
+					"command": "snippetify.collection.all.refresh",
+					"when": "view == snippet-collections",
+					"group": "navigation"
+				},
+				{
+					"command": "snippetify.collection.mine.refresh",
+					"when": "view == my-snippets",
+					"group": "navigation"
+				},
+				{
+					"command": "snippetify.collection.favorite.refresh",
+					"when": "view == favorite-snippets",
+					"group": "navigation"
+				},
+				{
+					"command": "snippetify.collection.recent.refresh",
+					"when": "view == recently-used",
+					"group": "navigation"
+				}
+			],
+			"editor/context": [
+				{
+					"command": "snippetify.snippet.save",
+					"when": "editorHasSelection",
+					"group": "Snippetify@1"
+				},
+				{
+					"command": "snippetify.snippet.search",
+					"when": "editorTextFocus",
+					"group": "Snippetify@2"
+				}
+			]
+		},
 		"viewsContainers": {
 			"activitybar": [
 				{
-					"id": "snippetify-explorer",
+					"id": "snippetify-collection",
 					"title": "Snippetify",
-					"icon": "img/icon.svg"
+					"icon": "media/icon.png"
 				}
 			]
 		},
 		"views": {
-			"snippetify-explorer": [
+			"snippetify-collection": [
 				{
-					"id": "snippetify-explorer",
+					"id": "snippet-collections",
 					"name": "Collections",
-					"icon": "img/icon.svg",
 					"contextualTitle": "Snippet's collections"
+				},
+				{
+					"id": "my-snippets",
+					"name": "My snippets",
+					"contextualTitle": "My Snippet"
+				},
+				{
+					"id": "favorite-snippets",
+					"name": "Favorite snippets",
+					"contextualTitle": "My favorite Snippets"
+				},
+				{
+					"id": "recently-used",
+					"name": "Recently used",
+					"contextualTitle": "Recent used snippets"
 				}
 			]
+		},
+		"configuration": {
+			"title": "Snippetify",
+			"properties": {
+				"snippetify.token": {
+					"type": "string",
+					"scope": "application",
+					"markdownDescription": "Your identification token. The link [Token](https://snippetify.com)"
+				}
+			}
 		}
 	},
 	"scripts": {
