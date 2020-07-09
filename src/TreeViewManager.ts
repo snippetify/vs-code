@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 
+import WebviewManager from './WebviewManager';
 import SnippetManager from './SnippetManager';
 import SnippetProvider from './dataProvider/SnippetProvider';
 
@@ -18,6 +19,7 @@ export default class TreeViewManager {
     private userSnippetProvider?: SnippetProvider;
     private userFavoriteProvider?: SnippetProvider;
 
+    private statusBarItem?: vscode.StatusBarItem;
     private snippetManager: SnippetManager;
 
     constructor(readonly ctx: vscode.ExtensionContext) {
@@ -26,6 +28,7 @@ export default class TreeViewManager {
 
         this.registerCommands();
         this.registerProviders();
+        this.createStatusBarItem();
     }
 
     static create(ctx: vscode.ExtensionContext): TreeViewManager {
@@ -83,6 +86,15 @@ export default class TreeViewManager {
                     .catch(() => vscode.window.showErrorMessage("Cannot remove your favorite snippets from collection"));
             }
         });
+    }
+
+    private createStatusBarItem () {
+        this.statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 0);
+        this.statusBarItem.text = 'Snippetify';
+        this.statusBarItem.command = WebviewManager.SEARCH_PANEL_CMD;
+        this.statusBarItem.tooltip = 'Show Snippetify commands';
+        this.ctx.subscriptions.push(this.statusBarItem);
+        this.statusBarItem.show();
     }
 
     private registerCommands () {
