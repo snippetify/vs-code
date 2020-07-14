@@ -153,8 +153,6 @@ Take a look at  [snippetify.com/help](https://snippetify.com/help) for additiona
 
 We welcome your contributions and thank you for working to improve the  Snippetify development experience in VS Code. If you would like to help work on  the VS Code Snippetify extension, please see our [contribution guide](https://github.com/snippetify/vs-code/blob/master/CONTRIBUTING.md). It explains how to build and run the extension locally, and it describes the process of sending a contribution.
 
------------------------------------------------------------------------------------------------------------
-
 ## [License](https://github.com/snippetify/vs-code/blob/master/LICENSE)
 
 * [MIT](https://github.com/snippetify/vs-code/blob/master/LICENSE)
