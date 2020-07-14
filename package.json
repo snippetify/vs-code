@@ -4,7 +4,7 @@
 	"publisher": "Snippetify",
 	"icon": "media/logo.png",
 	"description": "Create snippets from editor code and quickly insert snippets from Snippetify warehouse",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"baseURL": "https://api.snippetify.com",
 	"engines": {
 		"vscode": "^1.46.0"
