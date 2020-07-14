@@ -1,6 +1,6 @@
-# snippetify README
+# Snippetify
 
-This is the README for your extension "snippetify". After writing up a brief description, we recommend including the following sections.
+This extension enables you to create snippets from editor code and quickly insert snippets from Snippetify warehouse. With Intellisense out of the box.
 
 ## Features
 

@@ -1,9 +1,9 @@
 {
 	"name": "snippetify",
 	"displayName": "Snippetify",
-	"description": "Fetch and save snippets",
-	"version": "0.0.1",
-	"baseURL": "http://127.0.0.1:8000",
+	"description": "Create snippets from editor code and quickly insert snippets from Snippetify warehouse",
+	"version": "1.0.0",
+	"baseURL": "https://api.snippetify.com",
 	"engines": {
 		"vscode": "^1.46.0"
 	},

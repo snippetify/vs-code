@@ -10,5 +10,6 @@ export default class Snippet {
     get tags (): any[] { return this.attributes.tags; }
     get meta (): any[] { return this.attributes.meta; }
     get desc (): string { return this.attributes.description; }
+    get isOwner (): string { return this.attributes.is_owner; }
     get language (): string { return this.attributes.language; }
 }

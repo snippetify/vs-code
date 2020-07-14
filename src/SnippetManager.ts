@@ -140,9 +140,8 @@ export default class SnippetManager {
         return new Promise((resolve, reject) => {
             Axios.instance(this.ctx)
                 .request({
-                    url: 'snippets/me/download',
-                    method: 'get',
-                    data: { type: type }
+                    url: `snippets/me/download/${type === 'me' ? 'all' : type}`,
+                    method: 'get'
                 })
                 .then(res => {
                     let promises: Array<Promise<any>> = [];
@@ -219,6 +218,10 @@ export default class SnippetManager {
 
     private registerCommands () {
         this.ctx.subscriptions.push(vscode.commands.registerCommand(SnippetManager.SAVE_SNIPPET_CMD, (snippet: Snippet) => {
+            if (snippet.isOwner) {
+                vscode.window.showInformationMessage('You cannot add your snippets to collection, you must download them.');
+                return;
+            }
             this.saveSnippet(snippet)
                 .then(() => {
                     vscode.window.showInformationMessage('Snippet added to collections');
@@ -234,8 +237,7 @@ export default class SnippetManager {
         }));
 
 
-        this.ctx.subscriptions.push(vscode.commands.registerCommand(SnippetManager.DISPLAY_SAVE_PANEL_CMD, () => {
-            const editor = vscode.window.activeTextEditor || vscode.window.visibleTextEditors[0] || undefined;
+        this.ctx.subscriptions.push(vscode.commands.registerTextEditorCommand(SnippetManager.DISPLAY_SAVE_PANEL_CMD, (editor) => {
             const lang = editor.document.languageId;
             const text = editor.document.getText(editor.selection);
             vscode.commands.executeCommand(WebviewManager.SAVE_PANEL_CMD, new Snippet({ code: text, tags: [{ name: lang }] }));

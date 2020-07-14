@@ -53,7 +53,7 @@ export default class TreeViewManager {
                 this.snippetManager.deleteSnippets('collection')
                     .then(v => {
                         this.collectionProvider?.refresh();
-                        vscode.window.showInformationMessage(`Snippet's collections deleted. (${v.length})`)
+                        vscode.window.showInformationMessage(`Snippet's collections deleted. (${v.length})`);
                     })
                     .catch(() => vscode.window.showErrorMessage("Cannot delete your snippet's collections"));
             }
