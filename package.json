@@ -1,8 +1,10 @@
 {
 	"name": "snippetify",
 	"displayName": "Snippetify",
+	"publisher": "Snippetify",
+	"icon": "media/logo.png",
 	"description": "Create snippets from editor code and quickly insert snippets from Snippetify warehouse",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"baseURL": "https://api.snippetify.com",
 	"engines": {
 		"vscode": "^1.46.0"
@@ -11,6 +13,16 @@
 		"Snippets",
 		"Programming Languages"
 	],
+	"license": "SEE LICENSE IN LICENSE.txt",
+	"homepage": "https://github.com/snippetify/vs-code",
+	"bugs": {
+		"url": "https://github.com/snippetify/vs-code/issues",
+		"email": "bugs@snippetify.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/snippetify/vs-code.git"
+	},
 	"activationEvents": [
 		"*"
 	],
