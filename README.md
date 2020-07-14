@@ -4,7 +4,7 @@ This extension enables you to save snippets to the cloud from editor code and qu
 
 ## About Snippetify
 
-![banner](/Applications/MAMP/htdocs/plugins/ide/vscode/media/banner.png)
+![banner](media/banner.png)
 
 Snippetify is a community snippets warehouse but also a suite of tools that allow you to exploit these snippets.
 
@@ -49,7 +49,7 @@ Snippetify is a community snippets warehouse but also a suite of tools that allo
 
    1. Snippet suggestion when typing
 
-<img src="/Applications/MAMP/htdocs/plugins/ide/vscode/media/tour.gif" alt="tour" style="zoom:80%;float:left;" />
+<img src="media/tour.gif" alt="tour" style="zoom:80%;float:left;" />
 
 ## Requirements
 
@@ -59,17 +59,17 @@ This Extension is available for free but registration is required for saving sni
 
 #### 1. Install the Snippetify extension
 
-<img src="/Applications/MAMP/htdocs/plugins/ide/vscode/media/install.gif" alt="install" style="zoom:80%;float:left;" />
+<img src="media/install.gif" alt="install" style="zoom:80%;float:left;" />
 
 #### 2. Add your Personal Access Token
 
 ##### 	1. Get your token [https://snippetify.com/settings/account/tokens](https://snippetify.com/settings/account/tokens)
 
-<img src="/Applications/MAMP/htdocs/plugins/ide/vscode/media/token.gif" alt="token" style="zoom:80%;float:left;" />
+<img src="media/token.gif" alt="token" style="zoom:80%;float:left;" />
 
 ##### 	2. Add it to **Preferences > Settings > Extensions > Snippetify**
 
-<img src="/Applications/MAMP/htdocs/plugins/ide/vscode/media/add_token.gif" alt="add_token" style="zoom:80%;float:left;" />
+<img src="media/add_token.gif" alt="add_token" style="zoom:80%;float:left;" />
 
 You're all set! You can start saving snippets
 
@@ -121,13 +121,13 @@ Delete your favorite snippets from local collection
 
 Right-click on an active editor to bring up Snippetify context menu actions. You can **Save Snippet** from the selected text or **Insert Snippet** at the cursor position.
 
-<img src="/Applications/MAMP/htdocs/plugins/ide/vscode/media/context_menu.png" alt="context_menu" style="zoom:25%;float:left;" />
+<img src="media/context_menu.png" alt="context_menu" style="zoom:25%;float:left;" />
 
 ## Status Bar Item
 
 Click on **</> Snippets** in the VSCode footer to launch **Snippetify** finder which lets you search for snippets in the cloud.
 
-<img src="/Applications/MAMP/htdocs/plugins/ide/vscode/media/status_bar.png" alt="status_bar" style="zoom:50%;float:left;" />
+<img src="media/status_bar.png" alt="status_bar" style="zoom:50%;float:left;" />
 
 ## Change Keyboard Shortcuts
 
@@ -141,7 +141,7 @@ This extension contributes the following settings:
 
 * `snippetify.token`: set your personal access token
 
-<img src="/Applications/MAMP/htdocs/plugins/ide/vscode/media/settings.png" alt="settings" style="zoom:50%;float:left;" />
+<img src="media/settings.png" alt="settings" style="zoom:50%;float:left;" />
 
 ## Ask for help
 
