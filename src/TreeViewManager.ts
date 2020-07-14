@@ -90,7 +90,7 @@ export default class TreeViewManager {
 
     private createStatusBarItem () {
         this.statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 0);
-        this.statusBarItem.text = 'Snippetify';
+        this.statusBarItem.text = '$(code) Snippetify';
         this.statusBarItem.command = WebviewManager.SEARCH_PANEL_CMD;
         this.statusBarItem.tooltip = 'Show Snippetify commands';
         this.ctx.subscriptions.push(this.statusBarItem);

@@ -193,7 +193,7 @@
 				"snippetify.token": {
 					"type": "string",
 					"scope": "application",
-					"markdownDescription": "Your identification token. The link [Token](https://snippetify.com)"
+					"markdownDescription": "Your Personal Access Token. The link [Token](https://snippetify.com/settings/account/tokens)"
 				}
 			}
 		}
